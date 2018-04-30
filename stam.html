@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .chart {
+            position: relative;
+            min-height: 50px;
+        }
+
+        .tick {
+            border-left: 1px solid black;
+            height: 10px;
+            position: absolute;
+            top: 6px;
+        }
+
+        .tick:nth-child(5n+1) {
+            height: 20px;
+            position: absolute;
+            top: 2px;
+        }
+
+        .tick > span {
+            position: relative;
+            width: 10px;
+            left: -5px;
+            top: 26px;
+            font: 1em Arial, Helvetica, sans-serif;
+            display: none;
+            font-size: 9px;
+        }
+
+        .tick:nth-child(5n+1) > span {
+            left: -9px;
+            font-weight: bold;
+            width: 15px;
+            text-align: center;
+        }
+
+        .tick:nth-child(10n+1) > span {
+            display: block;
+        }
+
+        .xBar {
+            border: 1px solid gray;
+            position: relative;
+            top: 20px;
+        }
+
+        .arrow-right {
+            position: absolute;
+            top: 15px;
+            font-size: 21px;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        /**  Define constants here  **/
+
+        // define how much pixels between every tick
+        var PIXELS_BETWEEN_TICKS = 5;
+        //define minimum pixels between every tick to limit the zoom in
+        var MINIMUM_PIXELS_BETWEEN_TICKS = 5;
+        //define maximum pixels between every tick to limit the zoom out
+        var MAXIMUM_PIXELS_BETWEEN_TICKS = 999;
+        //define how much ticks in the chart
+        var TICKS_NUMBER = 120;
+        //define the jump range (the numeric value jump from tick to tick)
+        var TICK_VALUE_JUMPING = 10;
+
+        /**  End of constants  **/
+
+        /**
+         * CSS is calculated here.
+         * left value of the ticks and so on.
+         * All the css is calculated in three cases: zoom in, zoom out and on init.
+         */
+        var calculateLeftPx = function () {
+            var leftPx = 0;
+            var ticks = document.getElementsByClassName('tick');
+
+            for (var i = 0; i < ticks.length; i++) {
+                ticks[i].style.left = leftPx + 'px';
+                leftPx += PIXELS_BETWEEN_TICKS;
+            }
+
+            document.getElementsByClassName('arrow-right')[0].style.left = leftPx + 5 + 'px';
+            document.getElementsByClassName('xBar')[0].style.width = leftPx + 'px';
+        };
+
+        /**
+         * zoom in. Will add one pixel in the number of pixels between every tick until the maximum value.
+         */
+        var zoomIn = function () {
+            if (PIXELS_BETWEEN_TICKS > MAXIMUM_PIXELS_BETWEEN_TICKS) {
+                return;
+            }
+
+            PIXELS_BETWEEN_TICKS += 1;
+            calculateLeftPx();
+        };
+
+        /**
+         * zoom out. Will reduce one pixel in the number of pixels between every tick until the minimum value.
+         */
+        var zoomOut = function () {
+            if (PIXELS_BETWEEN_TICKS < MINIMUM_PIXELS_BETWEEN_TICKS) {
+                return;
+            }
+
+            PIXELS_BETWEEN_TICKS -= 1;
+            calculateLeftPx();
+        };
+
+        /**
+         * will generate ticks in the chart.
+         * number of ticks in the chart is defined in the constants section.
+         */
+        var generateTicks = function () {
+            var chart = document.getElementsByClassName('chart')[0];
+
+            var tickValue = 0;
+
+            for (var  i =0;i<=TICKS_NUMBER;i++) {
+                var newTick = document.createElement('div');
+                var tickVal = document.createElement('span');
+                tickVal.innerHTML = tickValue;
+                tickValue += TICK_VALUE_JUMPING;
+                newTick.className = 'tick';
+                newTick.appendChild(tickVal);
+                chart.appendChild(newTick);
+            }
+        };
+
+        /**
+         * On DOM loaded, generate ticks then calculate css.
+         */
+        document.addEventListener("DOMContentLoaded", function (e) {
+            generateTicks();
+            calculateLeftPx();
+        });
+    </script>
+</head>
+<body>
+<div>
+    <hr class="xBar" align="left"/>
+    <span class="arrow-right">&rarr;</span>
+</div>
+<div class="chart"></div>
+<div>
+    <button onclick="zoomIn()">zoom in</button>
+    <button onclick="zoomOut()">zoom out</button>
+</div>
+</body>
+</html>
