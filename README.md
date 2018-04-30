@@ -6,6 +6,24 @@ You can define everything in the constants section, including how many ticks in 
 
 After you define these constants everything is generated using native JavaScript. 
 
-All the code commented and should be easy to read.
+```
+        // define how much pixels between every tick
+        PIXELS_BETWEEN_TICKS
+		
+        //define minimum pixels between every tick to limit the zoom in
+        MINIMUM_PIXELS_BETWEEN_TICKS
+		
+        //define maximum pixels between every tick to limit the zoom out
+        MAXIMUM_PIXELS_BETWEEN_TICKS
+		
+        //define how much ticks in the chart
+        TICKS_NUMBER
+		
+        //define the jump range (the numeric value jump from tick to tick)
+        TICK_VALUE_JUMPING
+		```
+
+		
+All the code is commented and should be easy to read.
  
 Enjoy!
