@@ -21,7 +21,7 @@ After you define these constants everything is generated using native JavaScript
 		
         //define the jump range (the numeric value jump from tick to tick)
         TICK_VALUE_JUMPING
-		```
+```
 
 		
 All the code is commented and should be easy to read.
