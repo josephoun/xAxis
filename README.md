@@ -1,4 +1,4 @@
-# xAxis
+# Dynamic xAxis Bar with Zoom In and Zoom Out
 
 I have created an xAxis bar. 
 
